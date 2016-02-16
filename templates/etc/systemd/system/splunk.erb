@@ -1,0 +1,19 @@
+# This file is managed by Puppet and local changes
+# may be overwritten
+
+[Unit]
+Description=Splunk Service
+Wants=network.target
+After=network.target
+
+[Service]
+Type=forking
+RemainAfterExit=yes
+ExecStart=<%= @binary%> start
+ExecStop=<%= @binary%> stop
+ExecReload=<%= @binary%> restart
+StandardOutput=syslog
+
+
+[Install]
+WantedBy=multi-user.target

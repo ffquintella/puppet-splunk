@@ -119,7 +119,6 @@ class splunk (
   $package_source    = undef,
   $package_provider  = undef,
   $version           = $::splunk::params::version,
-  $replace_passwd    = $::splunk::params::replace_passwd,
 ) inherits splunk::params {
 
 # Added the preseed hack after getting the idea from very cool
@@ -137,6 +136,11 @@ class splunk (
       $splunkhome = '/opt/splunk'
       $pkgname    = 'splunk'
       $license    = 'puppet:///modules/splunk/noarch/opt/splunk/etc/splunk-forwarder.license'
+    }
+    'master': {
+      $pkgname    = 'splunk'
+      $splunkhome = '/opt/splunk'
+      $license    = undef
     }
     default: {
       $splunkhome = '/opt/splunk'
@@ -168,6 +172,16 @@ class splunk (
         class { 'splunk::config::mgmt_port': }
         class { 'splunk::config::remove_uf': }
       }
+      'master': {
+        class { 'splunk::outputs': tcpout_disabled => false } 
+        class { 'splunk::indexes': } 
+
+        class { 'splunk::config::lwf': status => 'disabled' } 
+        class { 'splunk::config::mgmt_port': disableDefaultPort => 'False' }
+        class { 'splunk::config::master': } 
+        class { 'splunk::config::remove_uf': } 
+        class { 'splunk::config::license': server => $licenseserver }
+      }
       'hwf': {
         fail("Server type: ${type} feature has not yet been implemented")
         #class { 'splunk::outputs': }
@@ -184,6 +198,9 @@ class splunk (
 
         # expect should be in the site/module
         #package { 'expect': }
+
+
+
       }
       'search': {
         class { 'splunk::outputs': tcpout_disabled => true }

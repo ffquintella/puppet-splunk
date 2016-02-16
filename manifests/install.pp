@@ -8,22 +8,44 @@ class splunk::install (
   $version          = $::splunk::version,
   $package_source   = $::splunk::package_source,
   $package_provider = $::splunk::package_provider,
-  $replace_passwd   = $::splunk::replace_passwd
   ) {
 
   package { $pkgname:
     ensure   => $version,
     provider => $package_provider,
     source   => $package_source,
-  }->
+  }
 
-  file { '/etc/init.d/splunk':
-    ensure => present,
-    mode   => '0700',
-    owner  => 'root',
-    group  => 'root',
-    source => "puppet:///modules/splunk/${::osfamily}/etc/init.d/${pkgname}"
-  } ->
+  if $splunk::type == 'uf'{
+    $binary = '/opt/splunkforwarder/bin/splunk'
+  }else {
+    $binary = '/opt/splunk/bin/splunk'
+  }
+
+  if $::os[family] == "RedHat" {
+    if $::os[release][major] == "7" {
+      file{'/etc/systemd/system/splunk.service':
+        ensure  => present,
+        content => template('splunk/etc/systemd/system/splunk.erb'),
+      }
+    } else {
+      file { '/etc/init.d/splunk':
+        ensure => present,
+        mode   => '0700',
+        owner  => 'root',
+        group  => 'root',
+        source => "puppet:///modules/splunk/${::osfamily}/etc/init.d/${pkgname}"
+      }
+    }
+  } else{
+      file { '/etc/init.d/splunk':
+        ensure => present,
+        mode   => '0700',
+        owner  => 'root',
+        group  => 'root',
+        source => "puppet:///modules/splunk/${::osfamily}/etc/init.d/${pkgname}"
+      }
+  }
 
   # inifile
   ini_setting { 'Server Name':
@@ -39,7 +61,7 @@ class splunk::install (
     section => 'sslConfig',
     setting => 'supportSSLV3Only',
     value   => 'True',
-  } ->
+  } /* ->
 
   file { "${splunkhome}/etc/splunk.license":
     ensure => present,
@@ -52,7 +74,6 @@ class splunk::install (
 
   file { "${splunkhome}/etc/passwd":
     ensure  => present,
-    replace => $replace_passwd,
     mode    => '0600',
     owner   => 'root',
     group   => 'root',
@@ -69,5 +90,5 @@ class splunk::install (
       recurse => true,
       purge   => false,
       source  => 'puppet:///modules/splunk/noarch/opt/splunk/etc/auth',
-  }
+  }*/
 }

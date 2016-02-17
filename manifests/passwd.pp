@@ -37,8 +37,8 @@ class splunk::passwd (
 
   file{ "${path}/passwd":
     ensure             => present,
-    owner              => root,
-    group              => root,
+    owner              => $splunk_user ,
+    group              => $splunk_group,
     content            => template('splunk/etc/splunk-passwd.erb'),
     source_permissions => ignore
   }

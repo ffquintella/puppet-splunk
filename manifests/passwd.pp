@@ -36,8 +36,7 @@ class splunk::passwd (
     owner              => root,
     group              => root,
     content            => template('splunk/etc/splunk-passwd.erb'),
-    source_permissions => ignore ,
-    require            => Package['splunk']
+    source_permissions => ignore 
   }
 
 }

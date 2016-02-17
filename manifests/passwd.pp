@@ -24,13 +24,17 @@
 #
 class splunk::passwd (
   $path         = "${::splunk::splunkhome}/etc",
-  $users_array   = []
+  $users_array   = [],
+  $splunk_user  = $splunk::params::splunk_user,
+  $splunk_group = $splunk::params::splunk_group
   ) {
+
+
   # Validate hash
   if ( $users_array ) {
     validate_array($users_array)
   }
- 
+
   file{ "${path}/passwd":
     ensure             => present,
     owner              => root,

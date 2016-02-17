@@ -30,13 +30,13 @@ class splunk::passwd (
   if ( $users_array ) {
     validate_array($users_array)
   }
-
+ 
   file{ "${path}/passwd":
     ensure             => present,
     owner              => root,
     group              => root,
     content            => template('splunk/etc/splunk-passwd.erb'),
-    source_permissions => ignore 
+    source_permissions => ignore
   }
 
 }

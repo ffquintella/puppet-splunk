@@ -149,7 +149,6 @@ class splunk (
     }
   }
 
-
   if ( $purge ) {
     validate_bool($purge)
     class { 'splunk::purge': }
@@ -198,9 +197,6 @@ class splunk (
 
         # expect should be in the site/module
         #package { 'expect': }
-
-
-
       }
       'search': {
         class { 'splunk::outputs': tcpout_disabled => true }

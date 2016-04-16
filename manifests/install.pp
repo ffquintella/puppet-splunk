@@ -27,10 +27,10 @@ class splunk::install (
   if $::os[family] == "RedHat" {
     if $::os[release][major] == "7" {
       # Revisar este script... Esta com problemas
-      /*file{'/etc/systemd/system/splunk.service':
+      file{'/etc/systemd/system/splunk.service':
         ensure  => present,
         content => template('splunk/etc/systemd/system/splunk.erb'),
-      }*/
+      }
     } else {
       file { '/etc/init.d/splunk':
         ensure => present,

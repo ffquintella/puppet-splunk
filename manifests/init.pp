@@ -108,7 +108,7 @@ class splunk (
   $localusers        = $::splunk::params::localusers,
   $licenseserver     = undef,
   $nagios_contacts   = $::splunk::params::nagios_contacts,
-  $nagiosserver      = $::splunk::nagiosserver,
+  $nagiosserver      = undef,
   $output_hash       = $::splunk::params::output_hash,
   $port              = $::splunk::params::port,
   $proxyserver       = $::splunk::params::proxyserver,
@@ -173,13 +173,13 @@ class splunk (
         class { 'splunk::config::remove_uf': }
       }
       'master': {
-        class { 'splunk::outputs': tcpout_disabled => false } 
-        class { 'splunk::indexes': } 
+        class { 'splunk::outputs': tcpout_disabled => false }
+        class { 'splunk::indexes': }
 
-        class { 'splunk::config::lwf': status => 'disabled' } 
+        class { 'splunk::config::lwf': status => 'disabled' }
         class { 'splunk::config::mgmt_port': disableDefaultPort => 'False' }
-        class { 'splunk::config::master': } 
-        class { 'splunk::config::remove_uf': } 
+        class { 'splunk::config::master': }
+        class { 'splunk::config::remove_uf': }
         class { 'splunk::config::license': server => $licenseserver }
       }
       'hwf': {

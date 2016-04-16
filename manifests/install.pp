@@ -18,8 +18,10 @@ class splunk::install (
 
   if $splunk::type == 'uf'{
     $binary = '/opt/splunkforwarder/bin/splunk'
+    $run_dir = '/opt/splunkforwarder/var/run/splunk'
   }else {
     $binary = '/opt/splunk/bin/splunk'
+    $run_dir = '/opt/splunk/var/run/splunk'
   }
 
   if $::os[family] == "RedHat" {

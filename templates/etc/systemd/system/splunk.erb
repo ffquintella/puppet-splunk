@@ -9,6 +9,7 @@ After=network.target
 [Service]
 Type=forking
 RemainAfterExit=yes
+PIDFile=<%= @run_dir%>/splunk.pid
 ExecStart=<%= @binary%> start
 ExecStop=<%= @binary%> stop
 ExecReload=<%= @binary%> restart

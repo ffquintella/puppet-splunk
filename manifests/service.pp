@@ -10,12 +10,12 @@ class splunk::service {
   if $::os[family] == "RedHat" {
     if $::os[release][major] == "7" {
 
-      service {
+      /*service {
         'splunk':
           ensure     => $::splunk::service_ensure,
           hasrestart => true,
           require => File['/etc/systemd/system/splunk.service']
-      }
+      }*/
 
     }else{
         service {

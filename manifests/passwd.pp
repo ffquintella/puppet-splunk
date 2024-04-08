@@ -29,12 +29,6 @@ class splunk::passwd (
   $splunk_group = $splunk::params::splunk_group
   ) {
 
-  include stdlib
-
-  # Validate hash
-  if ( $users_array ) {
-    validate_array($users_array)
-  }
 
   file{ "${path}/passwd":
     ensure             => present,

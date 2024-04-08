@@ -29,6 +29,7 @@ class splunk::passwd (
   $splunk_group = $splunk::params::splunk_group
   ) {
 
+  include stdlib
 
   # Validate hash
   if ( $users_array ) {
@@ -40,7 +41,7 @@ class splunk::passwd (
     owner              => $splunk_user ,
     group              => $splunk_group,
     content            => template('splunk/etc/splunk-passwd.erb'),
-    source_permissions => ignore
+    source_permissions => ignore,
   }
 
 }
